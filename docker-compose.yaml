@@ -12,7 +12,8 @@ services:
       timeout: 10s
       retries: 5
       start_period: 10s
-
+    networks:
+      - opencut-network
   redis:
     image: redis:7-alpine
     restart: unless-stopped
@@ -24,7 +25,8 @@ services:
       timeout: 10s
       retries: 5
       start_period: 10s
-
+    networks:
+      - opencut-network
   serverless-redis-http:
     image: hiett/serverless-redis-http:latest
     ports:
@@ -38,6 +40,8 @@ services:
       timeout: 10s
       retries: 5
       start_period: 10s
+    networks:
+      - opencut-network
   web:
     build:
       context: .
