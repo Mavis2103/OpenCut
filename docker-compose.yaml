@@ -72,8 +72,7 @@ services:
     networks:
       - opencut-network
     depends_on:
-      web:
-        condition: service_healthy
+      - web
 volumes:  
   postgres_data:
 
