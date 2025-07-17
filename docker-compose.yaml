@@ -2,10 +2,6 @@ services:
   db:
     image: postgres:17
     restart: unless-stopped
-    environment:
-      POSTGRES_USER: opencut
-      POSTGRES_PASSWORD: opencutthegoat
-      POSTGRES_DB: opencut
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
@@ -33,10 +29,6 @@ services:
     image: hiett/serverless-redis-http:latest
     ports:
       - "8079:80"
-    environment:
-      SRH_MODE: env
-      SRH_TOKEN: example_token
-      SRH_CONNECTION_STRING: "redis://redis:6379"
     depends_on:
       redis:
         condition: service_healthy
@@ -53,13 +45,6 @@ services:
     restart: unless-stopped
     ports:
       - "3100:3000" # app is running on 3000 so we run this at 3100
-    environment:
-      - NODE_ENV=production
-      - DATABASE_URL=postgresql://opencut:opencutthegoat@db:5432/opencut
-      - BETTER_AUTH_URL=http://localhost:3000
-      - BETTER_AUTH_SECRET=your-production-secret-key-here
-      - UPSTASH_REDIS_REST_URL=http://serverless-redis-http:80
-      - UPSTASH_REDIS_REST_TOKEN=example_token
     depends_on:
       db:
         condition: service_healthy
