@@ -59,7 +59,7 @@ services:
   nginx:
     image: nginx:latest
     ports:
-      - "80:80"
+      - "3101:80"
     depends_on:
       - web
     volumes:
