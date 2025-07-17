@@ -43,8 +43,8 @@ services:
       context: .
       dockerfile: ./apps/web/Dockerfile
     restart: unless-stopped
-    ports:
-      - "3100:3000" # app is running on 3000 so we run this at 3100
+    expose:
+      - 3000
     depends_on:
       db:
         condition: service_healthy
@@ -56,17 +56,25 @@ services:
       timeout: 10s
       retries: 5
       start_period: 30s
+    networks:
+      - opencut-network
   nginx:
-    image: nginx:latest
-    ports:
-      - "3101:80"
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx
+    expose:
+      - 80
+    restart: unless-stopped
+    networks:
+      - opencut-network
     depends_on:
-      - web
-    volumes:
-      - ./config/nginx.conf:/etc/nginx/nginx.conf:ro
+      web:
+        condition: service_healthy
 volumes:  
   postgres_data:
 
 networks:  
   default:  
     name: opencut-network
+  opencut-network:
+    driver: bridge
