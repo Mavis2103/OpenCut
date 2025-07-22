@@ -1,21 +1,10 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { env } from "./env";
 
 export async function middleware(request: NextRequest) {
-  const protectedPaths = ["/editor", "/projects"];
-
   // Handle fuckcapcut.com domain redirect
   if (request.headers.get("host") === "fuckcapcut.com") {
     return NextResponse.redirect("https://opencut.app/why-not-capcut", 301);
-  }
-
-  const path = request.nextUrl.pathname;
-
-  if (protectedPaths.includes(path) && env.NODE_ENV === "production") {
-    const homeUrl = new URL("/", request.url);
-    homeUrl.searchParams.set("redirect", request.url);
-    return NextResponse.redirect(homeUrl);
   }
 
   return NextResponse.next();
